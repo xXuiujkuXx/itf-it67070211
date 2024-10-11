@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700&display=swap" rel="stylesheet">
+    <title>Phone Book</title>
+    <style>
+        *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: system-ui, sans-serif;
+        }
+        body {
+            font-family: system-ui, sans-serif;
+            font-weight: 300;
+            text-align: center;
+            background: linear-gradient(45deg, #fafcfd, #fafafa);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            margin-top: 5%;
+        }
+        .profile {
+            margin: 20px auto;
+            position: relative;
+            width: 170px;
+        }
+        .profile img {
+            width: 183px;
+            height: 183px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .notification {
+            position: absolute;
+            background-color: red;
+            color: white;
+            font-size: 0.5rem;
+            border-radius: 60px;
+            width: 30px;
+            height: 30px;
+            bottom: 0;
+            right: 0%;
+            padding: 3px;
+        }
+        .notification-text{
+            font-weight: 150;
+            text-align: center;
+            align-self: center;
+        }
+        .user-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .userh1 {
+            margin-right: 10px;
+            font-weight: 600;
+            color: gray;
+        }
+        .img-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .imgh1 {
+            margin-right: 10px;
+            font-weight: 600;
+            color: gray;
+        }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 60%;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
+        }
+        table, th, td {
+            border: 1px solid #e1e1e1;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            font-size: 1rem;
+            color: #555;
+        }
+        th {
+            background-color: #f7f7f7;
+            color: #333;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tbody tr:hover {
+            background-color: #f1f1f1;
+            transform: scale(1.01);
+            transition: transform 0.2s;
+        }
+        tbody td {
+            border-bottom: 1px solid #e1e1e1;
+        }
+        input[type="text"], input[type="tel"] {
+            padding: 10px;
+            margin: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        input[type="text"]:focus, input[type="tel"]:focus {
+            border-color: gray;
+            outline: none;
+            box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+        }
+        button {
+            padding: 8px 12px;
+            margin: 10px;
+            background-color: gray;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: .5s;
+        }
+        button:hover {
+            background-color: gray;
+            transform: scale(1.2);
+            font-weight: 400;
+            letter-spacing: 2px;
+            border-radius: 2px;
+
+        }
+        .name-hover {
+            font-size: 2rem;
+            transition: .5s;
+        }
+        .name-hover:hover {
+            color: blue;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 2.3rem;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="name-dis" class="name-hover">Someone's Phone Book</h1>
+    <div class="profile">
+        <img id="avatar-image" src="https://media.tenor.com/P_Qu80HM5_MAAAAM/bocchi-the-rock-bocchi.gif" alt="Avatar">
+        <div class="notification">
+            <h1 class="notification-text">1</h1>
+        </div>
+    </div>
+    <div class="user-container">
+        <h4 class="userh1">Set the Username</h4>
+        <input type="text" id="username-input" placeholder="Enter Username">
+        <button onclick="sainame()">SET</button>
+    </div>
+    <div class="img-container">
+        <h4 class="imgh1">Set the profile image URL</h4>
+        <input type="text" id="bocchi-initial" placeholder="Enter Image URL">
+        <button onclick="saiimg()">SET</button>
+    </div>
+    <h3>Phone Number List</h3>
+    <input type="text" id="name-input" placeholder="Name">
+    <input type="tel" id="tel-input" placeholder="Tel">
+    <button onclick="saitab()">ADD</button>
+    <button onclick="saitab()">EXPORT</button>
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>Name</th>
+                <th>Phone Number</th>
+            </tr>
+        </thead>
+        <tbody id="phoneteble">
+        </tbody>
+    </table>
+    <script>
+        let entryCount = "";
+        function sainame() {
+            const username = document.getElementById("username-input").value;
+            if (username.trim()) {
+                document.getElementById("name-dis").textContent = username + "'s Phone Book";
+            }
+        }
+        function saiimg() {
+            const avatarUrl = document.getElementById("bocchi-initial").value;
+            if (avatarUrl.trim()) {
+                document.getElementById("avatar-image").src = avatarUrl;
+            }
+        }
+        function saitab() {
+            const name = document.getElementById("name-input").value;
+            const tel = document.getElementById("tel-input").value;
+
+            if (name.trim() && tel.trim()) {
+                entryCount = entryCount + "I";
+                const insidetable = document.getElementById("phoneteble");
+                const row = insidetable.insertRow();
+                const cell1 = row.insertCell(0);
+                const cell2 = row.insertCell(1);
+                const cell3 = row.insertCell(2);
+                cell1.textContent = entryCount;
+                cell2.textContent = name;
+                cell3.textContent = tel;
+                document.getElementById("name-input").value = '';
+                document.getElementById("tel-input").value = '';
+            }
+        }
+        document.getElementById('name-dis').addEventListener('click', function() {
+        window.location.href = 'https://github.com/xXuiujkuXx';
+        });
+        const fluctuatenum = document.querySelector('.notification-text');
+        let current = 1;
+        function fluctuatework() {
+            current = (current % 99) + 1;
+            fluctuatenum.textContent = current;
+        }
+        setInterval(fluctuatework, 50);
+    </script>
+</body>
+</html>
