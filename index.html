@@ -169,8 +169,8 @@
     <h3>Phone Number List</h3>
     <input type="text" id="name-input" placeholder="Name">
     <input type="tel" id="tel-input" placeholder="Tel">
-    <button onclick="saitab()">ADD</button>
-    <button onclick="saitab()">EXPORT</button>
+    <button class="btn" onclick="addContact()">ADD</button>
+    <button class="btn" onclick="exportContacts()">EXPORT</button>
     <table>
         <thead>
             <tr>
@@ -183,20 +183,23 @@
         </tbody>
     </table>
     <script>
+        const contacts = [];
         let entryCount = "";
+
         function sainame() {
             const username = document.getElementById("username-input").value;
             if (username.trim()) {
                 document.getElementById("name-dis").textContent = username + "'s Phone Book";
             }
         }
+
         function saiimg() {
             const avatarUrl = document.getElementById("bocchi-initial").value;
             if (avatarUrl.trim()) {
                 document.getElementById("avatar-image").src = avatarUrl;
             }
         }
-        function saitab() {
+        function addContact() {
             const name = document.getElementById("name-input").value;
             const tel = document.getElementById("tel-input").value;
 
@@ -210,13 +213,15 @@
                 cell1.textContent = entryCount;
                 cell2.textContent = name;
                 cell3.textContent = tel;
+                contacts.push({ name, phone: tel });   
                 document.getElementById("name-input").value = '';
                 document.getElementById("tel-input").value = '';
             }
         }
         document.getElementById('name-dis').addEventListener('click', function() {
-        window.location.href = 'https://github.com/xXuiujkuXx';
+            window.location.href = 'https://github.com/xXuiujkuXx';
         });
+
         const fluctuatenum = document.querySelector('.notification-text');
         let current = 1;
         function fluctuatework() {
@@ -224,6 +229,23 @@
             fluctuatenum.textContent = current;
         }
         setInterval(fluctuatework, 50);
+        function exportContacts() {
+            let csv = 'Name,Phone Number\n';
+            contacts.forEach(contact => {
+                csv += `${contact.name},${contact.phone}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            if (link.download !== undefined) {
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', 'contacts.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
     </script>
 </body>
 </html>
